@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import { TCurrency } from "./CalculatorMain.vue";
 
 const props = defineProps<{
-  addNewCurrency: (currencyName: string) => void;
+  addNewCurrency: (currency: TCurrency) => void;
 }>();
 
-const currencies = ref<string[]>([]);
-const currencyAbbr = ref<string[]>([]);
+const currencies = ref<TCurrency[]>([]);
 
 onMounted(() => {
   fetchCurrencies();
@@ -20,19 +20,18 @@ const fetchCurrencies = async () => {
       "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
     );
 
-    currencyAbbr.value = Object.keys(response.data);
-    currencies.value = Object.values(response.data);
+    const keys: string[] = Object.keys(response.data);
+    const values: string[] = Object.values(response.data);
 
-    // Use indices to update the reactive array
-    currencies.value = currencies.value.map((value, index) => {
-      if (!value) {
-        const tempValue = currencyAbbr.value[index];
-        return tempValue.charAt(0).toUpperCase() + tempValue.slice(1);
+    currencies.value = keys.map((abbr, index) => {
+      let currency = values[index];
+
+      if (!currency) {
+        currency = abbr.charAt(0).toUpperCase() + abbr.slice(1);
       }
-      return value;
-    });
 
-    console.log(response.data);
+      return { abbr: abbr, name: currency };
+    });
   } catch (error) {
     console.error("Error fetching currencies:", error);
   }
@@ -43,8 +42,15 @@ const handleCurrencySelect = (event: Event) => {
   const target = event.target as HTMLSelectElement;
   const selectedValue = target.value;
 
+  console.log(selectedValue);
   if (selectedValue) {
-    props.addNewCurrency(selectedValue);
+    const currency = currencies.value.find(
+      (currency) => currency.abbr === selectedValue
+    );
+
+    if (currency) {
+      props.addNewCurrency(currency);
+    }
 
     target.selectedIndex = 0;
   }
@@ -58,8 +64,12 @@ const handleCurrencySelect = (event: Event) => {
     @change="handleCurrencySelect"
   >
     <option disabled selected>Add new currency</option>
-    <option v-for="currency in currencies" :key="currency" :value="currency">
-      {{ currency }}
+    <option
+      v-for="currency in currencies"
+      :key="currency.abbr"
+      :value="currency.abbr"
+    >
+      {{ currency.name }}
     </option>
   </select>
 </template>

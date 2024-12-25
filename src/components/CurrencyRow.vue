@@ -2,13 +2,14 @@
 import { ref, watch } from "vue";
 import { conversionRates } from "../helpers/conversionRates";
 import { TrashIcon } from "@heroicons/vue/24/outline";
+import { TCurrency } from "./CalculatorMain.vue";
 
 // Props
 const props = defineProps<{
-  currencyName: string;
+  currency: TCurrency;
   currencyRate?: number;
-  updateActiveCurrency: (currencyName: string) => void;
-  removeCurrency: (currencyName: string) => void;
+  updateActiveCurrency: (currency: TCurrency) => void;
+  removeCurrency: (currency: TCurrency) => void;
 }>();
 
 // Reactive variables for income values in different time periods
@@ -22,7 +23,7 @@ const annually = ref<number>(0);
 const periods = { hourly, daily, weekly, monthly, annually };
 
 const handleOnInput = (baseIncome: keyof typeof periods) => {
-  props.updateActiveCurrency(props.currencyName);
+  props.updateActiveCurrency(props.currency);
   updateFields(baseIncome);
 };
 
@@ -46,7 +47,7 @@ const updateFields = (baseIncome: keyof typeof periods | "default") => {
 };
 
 const handleOnRemoveCurrency = () => {
-  props.removeCurrency(props.currencyName);
+  props.removeCurrency(props.currency);
 };
 
 watch(
@@ -58,11 +59,11 @@ watch(
 <template>
   <tr class="hover">
     <td>
-      <div class="font-bold">{{ props.currencyName }}</div>
+      <div class="font-bold">{{ props.currency.name }}</div>
     </td>
     <td>
       <input
-        :id="`hourly-${props.currencyName}`"
+        :id="`hourly-${props.currency.abbr}`"
         type="number"
         class="input input-bordered input-xs w-full max-w-xs input-primary"
         v-model="hourly"
@@ -71,7 +72,7 @@ watch(
     </td>
     <td>
       <input
-        :id="`daily-${props.currencyName}`"
+        :id="`daily-${props.currency.abbr}`"
         type="number"
         class="input input-bordered input-xs w-full max-w-xs input-secondary"
         v-model="daily"
@@ -80,7 +81,7 @@ watch(
     </td>
     <td>
       <input
-        :id="`weekly-${props.currencyName}`"
+        :id="`weekly-${props.currency.abbr}`"
         type="number"
         class="input input-bordered input-xs w-full max-w-xs input-info"
         v-model="weekly"
@@ -89,7 +90,7 @@ watch(
     </td>
     <td>
       <input
-        :id="`monthly-${props.currencyName}`"
+        :id="`monthly-${props.currency.abbr}`"
         type="number"
         class="input input-bordered input-xs w-full max-w-xs input-success"
         v-model="monthly"
@@ -98,7 +99,7 @@ watch(
     </td>
     <td>
       <input
-        :id="`annually-${props.currencyName}`"
+        :id="`annually-${props.currency.abbr}`"
         type="number"
         class="input input-bordered input-xs w-full max-w-xs input-warning"
         v-model="annually"

@@ -8,12 +8,16 @@ import Links from "./Links.vue";
 
 export type TMoney = {
   amount: number;
+} & TCurrency;
+
+export type TCurrency = {
   name: string;
+  abbr: string;
 };
 
-const activeCurrency = ref<string>();
-const currencies = useLocalStorage<string[]>([], "currencies");
-const exchangeRates = ref<{ activeCurrency: string; rates: TMoney[] }>();
+const activeCurrency = ref<TCurrency>();
+const currencies = useLocalStorage<TCurrency[]>([], "currencies");
+const exchangeRates = ref<{ activeCurrency: TCurrency; rates: TMoney[] }>();
 
 const prepare = async () => {
   if (!currencies || currencies.value.length === 0) {
@@ -32,22 +36,25 @@ const fetchCurrencies = async () => {
       throw new Error(`${activeCurrency} is undefined`);
     }
 
+    console.log(`active ${activeCurrency.value.name}`);
+
     const response = await axios.get(
-      `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${activeCurrency.value}.json`
+      `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${activeCurrency.value.abbr}.json`
     );
 
     if (!response) {
-      throw new Error(`Currency data for ${activeCurrency} not found.`);
+      throw new Error(
+        `Currency data for ${activeCurrency.value.abbr} not found.`
+      );
     }
-
-    const activeCurrencyName = activeCurrency.value;
 
     exchangeRates.value = { activeCurrency: activeCurrency.value, rates: [] };
 
-    currencies.value.forEach((targetCurrencyName: string) => {
+    currencies.value.forEach((targetCurrency: TCurrency) => {
       exchangeRates.value?.rates.push({
-        amount: response.data[activeCurrencyName][targetCurrencyName],
-        name: targetCurrencyName,
+        abbr: targetCurrency.abbr,
+        name: targetCurrency.name,
+        amount: response.data[activeCurrency.value!.abbr][targetCurrency.abbr],
       });
     });
   } catch (error) {
@@ -55,7 +62,7 @@ const fetchCurrencies = async () => {
   }
 };
 
-const addNewCurrency = async (currency: string) => {
+const addNewCurrency = async (currency: TCurrency) => {
   if (currencies.value.includes(currency)) {
     return;
   }
@@ -65,11 +72,11 @@ const addNewCurrency = async (currency: string) => {
   await updateActiveCurrency(currency);
 };
 
-const removeCurrency = (currency: string) => {
+const removeCurrency = (currency: TCurrency) => {
   currencies.value = currencies.value.filter((x) => x !== currency);
 };
 
-const updateActiveCurrency = async (currency: string) => {
+const updateActiveCurrency = async (currency: TCurrency) => {
   if (activeCurrency.value === currency) {
     return;
   }
@@ -109,13 +116,13 @@ onMounted(() => {
     <tbody>
       <CurrencyRow
         v-if="activeCurrency"
-        :currency-name="currency"
+        :currency="currency"
         :currency-rate="
-          exchangeRates?.rates.find((x) => x.name === currency)?.amount
+          exchangeRates?.rates.find((x) => x.name === currency.name)?.amount
         "
         :update-active-currency="updateActiveCurrency"
         :remove-currency="removeCurrency"
-        :key="currency"
+        :key="currency.abbr"
         v-for="currency in currencies"
       ></CurrencyRow>
     </tbody>
