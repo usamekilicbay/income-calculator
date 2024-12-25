@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MyForm from "./components/MyForm.vue";
+import MyForm from "./components/CalculatorMain.vue";
 </script>
 
 <template>
