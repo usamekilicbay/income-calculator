@@ -52,16 +52,14 @@ const handleCurrencySelect = (event: Event) => {
 </script>
 
 <template>
-  <div>
-    <select
-      id="currency-selector"
-      className="select select-bordered w-full max-w-xs"
-      @change="handleCurrencySelect"
-    >
-      <option disabled selected>Add new currency</option>
-      <option v-for="currency in currencies" :key="currency" :value="currency">
-        {{ currency }}
-      </option>
-    </select>
-  </div>
+  <select
+    id="currency-selector"
+    class="select select-bordered select-accent w-full max-w-xs"
+    @change="handleCurrencySelect"
+  >
+    <option disabled selected>Add new currency</option>
+    <option v-for="currency in currencies" :key="currency" :value="currency">
+      {{ currency }}
+    </option>
+  </select>
 </template>

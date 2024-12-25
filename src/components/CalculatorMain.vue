@@ -1,9 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import axios from "axios";
 import CurrencyRow from "./CurrencyRow.vue";
 import CurrencySelector from "./CurrencySelector.vue";
 import { onMounted, ref } from "vue";
 import useLocalStorage from "../helpers/useLocalStorage";
+import Links from "./Links.vue";
 
 export type TMoney = {
   amount: number;
@@ -83,8 +84,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <CurrencySelector :add-new-currency="addNewCurrency"></CurrencySelector>
-  <table class="table">
+  <div class="navbar mb-5">
+    <div class="navbar-start">
+      <Links></Links>
+    </div>
+  </div>
+  <CurrencySelector
+    class="mb-5"
+    :add-new-currency="addNewCurrency"
+  ></CurrencySelector>
+  <table
+    class="table table-xs w-full max-w-2xl border-spacing-y-3 border-separate mx-auto"
+  >
     <thead>
       <tr>
         <th>Currency</th>
@@ -111,16 +122,4 @@ onMounted(() => {
   </table>
 </template>
 
-<style scoped>
-label {
-  display: block;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-}
-input {
-  margin-left: 1rem;
-  width: 120px;
-  padding: 0.3rem;
-  font-size: 1rem;
-}
-</style>
+<style scoped></style>
