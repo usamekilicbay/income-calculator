@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref, onMounted } from "vue";
-import { TCurrency } from "./CalculatorMain.vue";
+import { TCurrency } from "../common/type";
 
 const props = defineProps<{
   addNewCurrency: (currency: TCurrency) => void;
@@ -42,7 +42,7 @@ const handleCurrencySelect = (event: Event) => {
   const target = event.target as HTMLSelectElement;
   const selectedValue = target.value;
 
-  console.log(selectedValue);
+  // console.log(selectedValue);
   if (selectedValue) {
     const currency = currencies.value.find(
       (currency) => currency.abbr === selectedValue
