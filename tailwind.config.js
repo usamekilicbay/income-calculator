@@ -5,9 +5,21 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    fontFamily: {
+      sans: ['Inter', 'Roboto', 'sans-serif'], // Replaces default sans fonts
+      serif: ['Merriweather', 'serif'], // Replaces default serif fonts
+      mono: ['Fira Code', 'monospace'], // Replaces default monospace fonts
+    },
   },
-  plugins: [
-    require('daisyui'),
+  plugins: [require('daisyui')
   ],
+  daisyui: {
+    // themes: [
+    //   {
+    //     light: {
+    //       ...require("daisyui/src/theming/themes")["dark"],
+    //     }
+    //   }
+    // ]
+  }
 }
