@@ -1,5 +1,12 @@
-# Vue 3 + TypeScript + Vite
+<a href="your-link-here" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+  <h1 style="display: flex; align-items: center; gap: 10px;">
+    RateMate
+    <img src="./public/RateMateLogo.png" width="50" height="50" alt="Rate Mate Logo">
+  </h1>
+</a>
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+
+ is a free web app for calculating and converting the **hourly, daily, weekly, monthly and annually** income rates to each other and also different **currencies**!
+
+Developer's [LinkedIn](https://www.linkedin.com/in/usame-kilicbay/)
