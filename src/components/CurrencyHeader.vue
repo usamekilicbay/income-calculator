@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { inject } from "vue";
 import { TColumns } from "../common/type";
+import { FaEyeSlash } from "vue3-icons/fa";
 
 const columns = inject<TColumns>("columns")!;
 </script>
@@ -18,7 +19,11 @@ const columns = inject<TColumns>("columns")!;
           @click="columns.hourly = !columns.hourly"
         >
           <div className="swap-on">👁️</div>
-          <div className="swap-off">🕳️</div>
+          <div className="swap-off">
+            <div class="tooltip-custom" data-tip="Hourly">
+              <FaEyeSlash />
+            </div>
+          </div>
         </label>
       </div>
     </th>
@@ -32,7 +37,11 @@ const columns = inject<TColumns>("columns")!;
           @click="columns.daily = !columns.daily"
         >
           <div className="swap-on">👁️</div>
-          <div className="swap-off">🕳️</div>
+          <div className="swap-off">
+            <div class="tooltip-custom" data-tip="Daily">
+              <FaEyeSlash />
+            </div>
+          </div>
         </label>
       </div>
     </th>
@@ -46,7 +55,11 @@ const columns = inject<TColumns>("columns")!;
           @click="columns.weekly = !columns.weekly"
         >
           <div className="swap-on">👁️</div>
-          <div className="swap-off">🕳️</div>
+          <div className="swap-off">
+            <div class="tooltip-custom" data-tip="Weekly">
+              <FaEyeSlash />
+            </div>
+          </div>
         </label>
       </div>
     </th>
@@ -60,7 +73,11 @@ const columns = inject<TColumns>("columns")!;
           @click="columns.montly = !columns.montly"
         >
           <div className="swap-on">👁️</div>
-          <div className="swap-off">🕳️</div>
+          <div className="swap-off">
+            <div class="tooltip-custom" data-tip="Monthly">
+              <FaEyeSlash />
+            </div>
+          </div>
         </label>
       </div>
     </th>
@@ -74,7 +91,11 @@ const columns = inject<TColumns>("columns")!;
           @click="columns.annually = !columns.annually"
         >
           <div className="swap-on">👁️</div>
-          <div className="swap-off">🕳️</div>
+          <div className="swap-off">
+            <div class="tooltip-custom" data-tip="Annually">
+              <FaEyeSlash />
+            </div>
+          </div>
         </label>
       </div>
     </th>
@@ -84,5 +105,9 @@ const columns = inject<TColumns>("columns")!;
 <style scoped>
 .text-th {
   @apply font-medium sm:font-bold text-sm sm:text-lg;
+}
+
+.tooltip-custom {
+  @apply tooltip tooltip-top tooltip-info font-sans font-light;
 }
 </style>
