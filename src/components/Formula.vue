@@ -50,6 +50,7 @@ const annualLeaveInputState = computed<"small" | "big" | "valid">(() => {
 const annualLeaveTooltips = (): string => {
   switch (annualLeaveInputState.value) {
     case "valid":
+      return `How many days you don\'t work in a year?`;
       return `How many days you don\'t work in a year?
         (min: ${annualLeaveMin()} (30 - ${
         durations.days
@@ -131,155 +132,172 @@ watch(durations, () =>
   <div class="font-mono">
     <div class="flex flex-wrap justify-center gap-5">
       <div class="card">
-        <label for="hours" class="font-bold mb-1"
-          >{{ durations.hours === 1 ? "Hour" : "Hours" }}
-          <div
-            class="tooltip-custom"
-            :data-tip="`How many hours do you work in a day? (min:${hoursMin} | max:${hoursMax})`"
-          >
-            <FaQuestionCircle class="text-xs inline hover:text-info" />
-          </div>
-        </label>
+        <div
+          class="tooltip tooltip-right sm:tooltip-top tooltip-info font-sans font-light"
+          :data-tip="`How many hours do you work in a day?`"
+        >
+          <label for="hours" class="label-custom"
+            >{{ durations.hours === 1 ? "Hour" : "Hours" }}
+            <FaQuestionCircle class="tooltip-icon" />
+          </label>
+        </div>
         <input
           id="hours"
           v-model="durations.hours"
           @input="handleOnInput($event, 'hours')"
           class="input input-bordered input-sm w-24 input-accent"
         />
+        <div class="text-[8px] sm:text-[10px] mt-2">
+          {{ `Min:${hoursMin} - Max:${hoursMax}` }}
+        </div>
       </div>
       <div class="card">
-        <label for="days" class="font-bold mb-1"
-          >{{ durations.days === 1 ? "Day" : "Days" }}
-          <div
-            class="tooltip-custom"
-            :data-tip="`How many days do you work in a month? (min:${daysMin} | max:${daysMax})`"
-          >
-            <FaQuestionCircle class="text-xs inline hover:text-info" />
-          </div>
-        </label>
+        <div
+          class="tooltip tooltip-top tooltip-info font-sans font-light"
+          :data-tip="`How many days do you work in a month?`"
+        >
+          <label for="days" class="label-custom"
+            >{{ durations.days === 1 ? "Day" : "Days" }}
+            <FaQuestionCircle class="tooltip-icon" />
+          </label>
+        </div>
         <input
           id="days"
           v-model="durations.days"
           @input="handleOnInput($event, 'days')"
           class="input input-bordered input-sm w-24 input-accent"
         />
+        <div class="text-[8px] sm:text-[10px] mt-2">
+          {{ `Min:${daysMin} - Max:${daysMax}` }}
+        </div>
       </div>
       <div class="card">
-        <label for="annualLeave" class="font-bold mb-1">
-          {{ durations.annualLeave === 1 ? "Day Off" : "Days Off" }}
-          <div
-            :class="{
-              'tooltip-custom': annualLeaveInputState === 'valid',
-              'tooltip tooltip-top tooltip-warning font-sans font-light':
-                annualLeaveInputState !== 'valid',
-            }"
-            :data-tip="`${annualLeaveTooltips()}`"
-          >
+        <div
+          :class="{
+            'tooltip tooltip-left sm:tooltip-top tooltip-info font-sans font-light':
+              annualLeaveInputState === 'valid',
+            'tooltip tooltip-left tooltip-warning font-sans font-light':
+              annualLeaveInputState !== 'valid',
+          }"
+          :data-tip="`${annualLeaveTooltips()}`"
+        >
+          <label for="annualLeave" class="label-custom">
+            {{ durations.annualLeave === 1 ? "Day Off" : "Days Off" }}
             <FaQuestionCircle
               v-if="annualLeaveInputState === 'valid'"
-              class="text-xs inline hover:text-info"
+              class="tooltip-icon"
             />
-            <FaExclamationCircle v-else class="text-xs inline text-warning" />
-          </div>
-        </label>
+            <FaExclamationCircle
+              v-else
+              class="text-[10px] align-middle sm:text-xs inline text-warning"
+            />
+          </label>
+        </div>
         <input
           id="annual-leave"
           v-model="annualLeaveTemp"
           @input="handleOnAnnualLeaveInput"
           @change="handleOnChange($event, 'annualLeave')"
           :class="{
-            'input input-bordered input-sm w-24 input-accent':
+            'input input-bordered input-sm w-24 input-accent self-center':
               annualLeaveInputState === 'valid',
             'input input-bordered input-sm w-24 input-warning':
               annualLeaveInputState !== 'valid',
           }"
         />
+        <div class="text-[8px] sm:text-[10px] mt-2">
+          {{ `Min:${annualLeaveMin()} - Max:${annualLeaveMax()}` }}
+        </div>
       </div>
     </div>
     <!-- Explanation -->
-    <div class="mt-7 mx-4 sm:mx-10 md:mx-28 lg:mx-36">
-      <div class="collapse">
-        <input
-          type="checkbox"
-          @change="isExplanationShown = !isExplanationShown"
-        />
-        <div class="collapse-title p-0">
-          <span class="btn btn-warning btn-outline btn-xs rounded-md">
-            <span class="font-thin text-neutral-content">
-              Click to
-              {{ isExplanationShown ? "hide explanation" : "show explanation" }}
+    <div
+      class="mx-4 sm:mx-10 md:mx-28 lg:mx-48"
+      :class="{
+        'my-4 sm:my-7': isExplanationShown,
+        'mt-4 sm:mt-7': !isExplanationShown,
+      }"
+    >
+      <button
+        class="btn btn-warning btn-outline btn-xs mb-3 font-thin text-neutral-content"
+        @click="isExplanationShown = !isExplanationShown"
+      >
+        Click to
+        {{ isExplanationShown ? "hide explanation" : "show explanation" }}
+      </button>
+
+      <div
+        class="flex flex-wrap justify-center transition-all duration-500 ease-in-out transform overflow-hidden"
+        :class="{
+          'max-h-60': isExplanationShown,
+          'max-h-0': !isExplanationShown,
+        }"
+      >
+        <div class="mx-auto text-start">
+          <span class="font-bold">
+            Hours=
+            <span class="badge badge-warning">
+              {{ getHours() }}
+            </span>
+            , Days=
+            <span class="badge badge-warning"> {{ getDays() }} </span>, Annual
+            leaves=
+            <span class="badge badge-warning">
+              {{ getAnnualLeave() }}
             </span>
           </span>
-        </div>
-        <div class="collapse-content">
-          <div class="flex flex-wrap justify-center">
-            <div class="mx-auto text-start">
-              <span class="font-bold">
-                Hours=
-                <span class="badge badge-warning">
-                  {{ getHours() }}
-                </span>
-                , Days=
-                <span class="badge badge-warning"> {{ getDays() }} </span>,
-                Annual leaves=
-                <span class="badge badge-warning">
-                  {{ getAnnualLeave() }}
-                </span>
-              </span>
-              <h4>
-                <span class="badge badge-secondary font-bold">
-                  {{ getHours() }} x {{ getDays() }} x 12
-                  <template v-if="getAnnualLeave() >= 1">
-                    - ({{ getAnnualLeave() }} x {{ getHours() }})
-                  </template>
-                </span>
-                =
-                <span class="badge badge-secondary font-bold"
-                  >{{
-                    getHours() * getDays() * 12 - getHours() * getDays()
-                  }}
-                  hours</span
-                >
-                =
-                <span class="badge badge-secondary font-bold"
-                  >{{ getDays() * 12 }} days</span
-                >
-                =
-                <span class="badge badge-secondary font-bold"
-                  >{{ (getDays() * 12) / 30 }} months</span
-                >
-                =
-                <span class="badge badge-secondary font-bold"
-                  >{{ Math.floor(((getDays() * 12) / 30) * 4.3) }} weeks</span
-                >
-                (4.3 weeks in a month) = in a year.
-              </h4>
+          <h4>
+            <span class="badge badge-secondary font-bold">
+              {{ getHours() }} x {{ getDays() }} x 12
+              <template v-if="getAnnualLeave() >= 1">
+                - ({{ getAnnualLeave() }} x {{ getHours() }})
+              </template>
+            </span>
+            =
+            <span class="badge badge-secondary font-bold"
+              >{{
+                getHours() * getDays() * 12 - getHours() * getDays()
+              }}
+              hours</span
+            >
+            =
+            <span class="badge badge-secondary font-bold"
+              >{{ getDays() * 12 }} days</span
+            >
+            =
+            <span class="badge badge-secondary font-bold"
+              >{{ (getDays() * 12) / 30 }} months</span
+            >
+            =
+            <span class="badge badge-secondary font-bold"
+              >{{ Math.floor(((getDays() * 12) / 30) * 4.3) }} weeks</span
+            >
+            (4.3 weeks in a month) = in a year.
+          </h4>
 
-              <h4 class="font-light mt-5">
-                Which means if you make
-                <span class="badge badge-accent font-bold">$10/hour</span>, you
-                will be making:
-                <span class="badge badge-accent font-bold"
-                  >${{ getHours() * 10 }}/day</span
-                >,
-                <span class="badge badge-accent font-bold"
-                  >${{ getHours() * getDays() * 10 }}/month</span
-                >,
-                <span class="badge badge-accent font-bold">
-                  ${{ getHours() * getDays() * 10 * 12 }} - ${{
-                    getHours() * getAnnualLeave() * 10
-                  }}
-                </span>
-                (annual leave) = total income of
-                <span class="badge badge-accent font-bold">
-                  ${{
-                    getHours() * getDays() * 10 * 12 -
-                    getHours() * getAnnualLeave() * 10
-                  }}/year
-                </span>
-              </h4>
-            </div>
-          </div>
+          <h4 class="font-light mt-5">
+            Which means if you make
+            <span class="badge badge-accent font-bold">$10/hour</span>, you will
+            be making:
+            <span class="badge badge-accent font-bold"
+              >${{ getHours() * 10 }}/day</span
+            >,
+            <span class="badge badge-accent font-bold"
+              >${{ getHours() * getDays() * 10 }}/month</span
+            >,
+            <span class="badge badge-accent font-bold">
+              ${{ getHours() * getDays() * 10 * 12 }} - ${{
+                getHours() * getAnnualLeave() * 10
+              }}
+            </span>
+            (annual leave) = total income of
+            <span class="badge badge-accent font-bold">
+              ${{
+                getHours() * getDays() * 10 * 12 -
+                getHours() * getAnnualLeave() * 10
+              }}/year
+            </span>
+          </h4>
         </div>
       </div>
     </div>
@@ -287,7 +305,15 @@ watch(durations, () =>
 </template>
 
 <style scoped>
-.tooltip-custom {
-  @apply tooltip tooltip-top tooltip-info font-sans font-light;
+.label-custom {
+  @apply flex items-center justify-center gap-x-1 font-bold text-xs sm:text-base mb-1;
+}
+
+.tooltip:before {
+  @apply max-w-40 sm:max-w-60;
+}
+
+.tooltip-icon {
+  @apply text-[10px] align-middle sm:text-xs inline hover:text-info;
 }
 </style>
