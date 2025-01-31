@@ -5,7 +5,7 @@ import CurrencySelector from "./CurrencySelector.vue";
 import { onMounted, provide, Reactive, ref } from "vue";
 import useLocalStorageRef from "../helpers/useLocalStorageRef";
 import Navbar from "./Navbar.vue";
-import Work from "./Formula.vue";
+import Formula from "./Formula.vue";
 import CurrencyHeader from "./CurrencyHeader.vue";
 import useLocalStorageReactive from "../helpers/useLocalStorageReactive";
 import { TColumns, TCurrency, TFormula, TMoney } from "../common/type";
@@ -103,9 +103,12 @@ onMounted(() => {
 
 <template>
   <Navbar class="px-3 sm:px-6"></Navbar>
-  <Work :update-formula="updateFormula" class="mt-5 mb-3"></Work>
+  <Formula
+    :update-formula="updateFormula"
+    class="my-1 sm:mt-5 sm:mb-3"
+  ></Formula>
   <CurrencySelector
-    class="mb-5"
+    class="mb-1 sm:mb-5"
     :add-new-currency="addNewCurrency"
   ></CurrencySelector>
   <!-- Table Start -->
