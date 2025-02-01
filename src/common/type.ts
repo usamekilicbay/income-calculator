@@ -20,3 +20,5 @@ export type TCurrency = {
   name: string;
   abbr: string;
 };
+
+export type TNumberInputState = "empty" | "big" | "small" | "valid";
