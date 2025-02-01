@@ -3,12 +3,16 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import { FaExclamationCircle, FaQuestionCircle } from "vue3-icons/fa";
 import { TFormula } from "../common/type";
 import { enforceMinMaxWithInputEvent } from "../helpers/valueEnforcer";
+import InputInstantNumber from "./common/InputInstantNumber.vue";
 
 const durations = reactive({
   hours: 4,
   days: 20,
   annualLeave: 20,
+  exa: 10,
 });
+const inputState = ref<"big" | "small" | "valid">("valid");
+
 const annualLeaveTemp = ref(durations.annualLeave);
 const isExplanationShown = ref<boolean>(false);
 
@@ -131,6 +135,35 @@ watch(durations, () =>
 <template>
   <div class="font-mono">
     <div class="flex flex-wrap justify-center gap-5">
+      <div class="card">
+        <div
+          class="tooltip tooltip-right sm:tooltip-top tooltip-info font-sans font-light"
+          :data-tip="`How many exa do you work in an exass?`"
+        >
+          <label for="hours" class="label-custom"
+            >{{ durations.hours === 1 ? "Exa" : "Exas" }}
+            <FaQuestionCircle class="tooltip-icon" />
+          </label>
+        </div>
+        <InputInstantNumber
+          :id="'exa'"
+          v-model="durations.exa"
+          v-model:input-state="inputState"
+          :min="1"
+          :max="15"
+          :allow-empty="false"
+          :valid-class="'input input-bordered input-sm w-24 input-accent self-center'"
+          :invalid-class="'input input-bordered input-sm w-24 input-warning'"
+        />
+        <div class="text-[8px] sm:text-[10px] mt-2">
+          {{ `Min:${hoursMin} - Max:${hoursMax}` }}
+          {{ durations.exa }}
+          {{ inputState }}
+
+          //TODO: Continue to change actual inputs after validating current one
+          works perfectly, try to interact with the rows!
+        </div>
+      </div>
       <div class="card">
         <div
           class="tooltip tooltip-right sm:tooltip-top tooltip-info font-sans font-light"
