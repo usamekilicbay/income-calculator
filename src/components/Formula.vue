@@ -39,7 +39,7 @@ const daysMin = 1;
 const daysMax = 30;
 const annualLeaveMin = computed(() => 30 - durations.days + 1);
 const annualLeaveMax = computed(() => 365 - durations.days * 12);
-const isAnnualLeaveAllowEmpty = true;
+// const isAnnualLeaveAllowEmpty = true;
 
 // const isAnnualLeaveInvalid = computed(
 //   () =>
