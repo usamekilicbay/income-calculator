@@ -38,6 +38,7 @@ const handleOnInput = ($event: Event, baseIncome: keyof typeof periods) => {
   trigger(props.currency.abbr, hourly.value);
 };
 
+// TODO: Rename
 const updateFields2 = (
   baseIncome:
     | keyof typeof periods
@@ -127,6 +128,7 @@ const updateFields2 = (
   );
 };
 
+// TODO: Remove
 /**
  * Function to update all income fields based on a changed value.
  * @param source - The field (e.g., "hourly", "daily") that triggered the update.
