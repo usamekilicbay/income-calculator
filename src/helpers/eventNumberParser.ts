@@ -40,6 +40,6 @@ export function convertFromInput($event: Event): number {
  * @param {any} value - The value to check.
  * @returns {value is number} - Returns `true` if the value is a valid number, otherwise `false`.
  */
-function isValidNumber(value: any): value is number {
+export function isValidNumber(value: any): value is number {
   return typeof value === "number" && !isNaN(value);
 }
