@@ -108,6 +108,6 @@ const columns = inject<TColumns>("columns")!;
 }
 
 .tooltip-custom {
-  @apply tooltip tooltip-top tooltip-info font-sans font-light;
+  @apply tooltip tooltip-bottom tooltip-info font-sans font-light;
 }
 </style>
