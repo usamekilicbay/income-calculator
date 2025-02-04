@@ -96,7 +96,7 @@ const updateFields2 = (
         monthly.value * 12 - props.formula.annualLeave * daily.value;
       break;
     case "weekly":
-      monthly.value = props.formula.days / 4.33;
+      monthly.value = weekly.value * 4.33;
       daily.value = monthly.value / props.formula.days;
       hourly.value = daily.value / props.formula.hours;
       annually.value =
